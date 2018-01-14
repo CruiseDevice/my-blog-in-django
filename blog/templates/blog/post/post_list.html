@@ -1,0 +1,18 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+{% for post in posts %}    
+<div class = "well">
+        <div class = "media-body">
+                <div class="post">
+                    <div class="date">
+                        <p>published: {{ post.published_date }}</p>
+                    </div>
+                    <h1 class = "media-heading"><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+                    <p class = "text-right">{{post.author}}</p>
+                    <p>{{ post.text| truncatewords:30 | linebreaksbr }}</p>
+                </div>
+          </div>        
+</div>
+{% endfor %}
+{% include "pagination.html" with page=page_obj %}
+{% endblock %}
