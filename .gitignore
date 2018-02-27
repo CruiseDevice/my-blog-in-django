@@ -10,3 +10,4 @@ venv
 *.pyc
 .vscode
 blog/migrations
+mysite/credentials.py
