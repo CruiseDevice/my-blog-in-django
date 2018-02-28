@@ -10,4 +10,31 @@
     <h1>{{ post.title }}</h1>
     <p>{{ post.text|linebreaksbr }}</p> 
   </div>
-{% endblock %}
+  <div class = "display_comments">
+    {% for comment in comments %}
+      <br>
+      <br>
+      {{comment}}
+    {% endfor %}
+  </div>
+
+  <div class = "add_new_comment"> 
+    {% if new_comment %}
+      
+      <h2>Your comment has been added.</h2>
+    
+    {% else %}
+    
+      <h2>Add a new comment</h2>
+      <form action="." method="post">
+        {{comment_form.as_p}}
+        {% csrf_token %}
+        <p>
+          <input type="submit" name="" id="" value = "Add comment">
+        </p>
+      </form>
+    
+      {% endif %}
+  </div>
+
+  {% endblock %}
