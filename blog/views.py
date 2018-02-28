@@ -7,6 +7,7 @@ from django.views.generic import ListView
 from .models import Post, Comment
 from django.utils import timezone
 from .forms import PostForm, CommentForm
+from django.db.models import Count
 # Create your views here.
 
 class PostListView(ListView):
@@ -21,6 +22,7 @@ def post_list(request):
 
 def post_detail(request,pk):
     post = get_object_or_404(Post,pk=pk)
+    # new_comment = None
     # List of active comments for this post
     comments = post.comments.filter(active=True)
     if request.method == 'POST':
@@ -33,7 +35,7 @@ def post_detail(request,pk):
             new_comment.save()
     else:
         comment_form = CommentForm()
-    return render(request, 'blog/post/post_detail.html',{'post':post,'comment_form':comment_form})
+    return render(request, 'blog/post/post_detail.html',{'post':post,'comment_form':comment_form,'comments':comments})
 
 def post_new(request):
     if request.method == "POST":
