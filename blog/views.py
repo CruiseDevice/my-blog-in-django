@@ -4,9 +4,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView
-from .models import Post
+from .models import Post, Comment
 from django.utils import timezone
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 # Create your views here.
 
 class PostListView(ListView):
@@ -21,7 +21,19 @@ def post_list(request):
 
 def post_detail(request,pk):
     post = get_object_or_404(Post,pk=pk)
-    return render(request, 'blog/post/post_detail.html',{'post':post})
+    # List of active comments for this post
+    comments = post.comments.filter(active=True)
+    if request.method == 'POST':
+        # A comment was posted
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+            # Create comment object but don't save it to database
+            new_comment = comment_form.save(commit=False)
+            new_comment.post = post
+            new_comment.save()
+    else:
+        comment_form = CommentForm()
+    return render(request, 'blog/post/post_detail.html',{'post':post,'comment_form':comment_form})
 
 def post_new(request):
     if request.method == "POST":

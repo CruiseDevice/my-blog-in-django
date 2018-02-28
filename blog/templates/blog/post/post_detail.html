@@ -10,4 +10,15 @@
     <h1>{{ post.title }}</h1>
     <p>{{ post.text|linebreaksbr }}</p> 
   </div>
+  <div> 
+    {{new_comment}}
+    <h2>Add a new comment</h2>
+    <form action="." method="post">
+      {{comment_form.as_p}}
+      {% csrf_token %}
+      <p>
+        <input type="submit" name="" id="" value = "Add comment">
+      </p>
+    </form>
+  </div>
 {% endblock %}
