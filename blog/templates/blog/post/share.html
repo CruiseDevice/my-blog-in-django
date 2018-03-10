@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}
+    Share a Post
+{% endblock %}
+{% block content %}
+    <form action="." method = "POST">
+        {{form.as_p}}
+        {% csrf_token %}
+        <input type="submit" name="" id="" value ="Send e-mail">
+    </form>
+{% endblock %}
