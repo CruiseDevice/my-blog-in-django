@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView
 from .models import Post, Comment
 from django.utils import timezone
-from .forms import PostForm, CommentForm
+from .forms import PostForm, CommentForm, EmailPostForm
 from django.db.models import Count
 # Create your views here.
 
@@ -18,7 +18,10 @@ class PostListView(ListView):
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('created_date')
-    return render(request,'blog/post/post_list.html',{'posts':posts})
+    return render(request,
+            'blog/post/post_list.html',{
+                'posts':posts
+    })
 
 def post_detail(request,pk):
     post = get_object_or_404(Post,pk=pk)
@@ -35,7 +38,12 @@ def post_detail(request,pk):
             new_comment.save()
     else:
         comment_form = CommentForm()
-    return render(request, 'blog/post/post_detail.html',{'post':post,'comment_form':comment_form,'comments':comments})
+    return render(request, 
+            'blog/post/post_detail.html',{
+                'post':post,
+                'comment_form':comment_form,
+                'comments':comments
+    })
 
 def post_new(request):
     if request.method == "POST":
@@ -49,7 +57,10 @@ def post_new(request):
 
     else:
         form=PostForm()
-    return render(request,'blog/post/post_edit.html',{'form':form})
+    return render(request,
+            'blog/post/post_edit.html',{
+                'form':form
+    })
 
 
 def post_edit(request,pk):
@@ -64,12 +75,32 @@ def post_edit(request,pk):
             return redirect('post_detail',pk=post.pk)
     else:
         form = PostForm(instance=post)
-    return render(request,'blog/post/post_edit.html',{'form':form,'post':post})
+    return render(request,
+            'blog/post/post_edit.html',{
+                'form':form,
+                'post':post
+    })
 
 def post_draft_list(request):
     posts = Post.objects.filter(published_date__isnull=True).order_by('created_date')
-    return render(request,'blog/post/post_draft_list.html',{'posts':posts})
+    return render(request,
+            'blog/post/post_draft_list.html',{
+                'posts':posts
+    })
 
-def post_share(request, post_id):
+def post_share(request, pk):
     # Retrieve post by id
-    return render(request,'blog/post/share.html',{})
+    post = get_object_or_404(Post, pk=pk, status='published')
+    if request.method == "POST":
+        # Form was submitted
+        form = EmailPostForm(request.POST)
+        if form.is_valid():
+            # Form fields passed validation
+            cd = form.cleaned_data
+            # ... send email
+    else:
+        form = EmailPostForm()
+    return render(request, 'blog/post/share.html',{
+            'post':post,
+            'form':form
+    })
