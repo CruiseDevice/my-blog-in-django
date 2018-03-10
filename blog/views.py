@@ -64,12 +64,12 @@ def post_edit(request,pk):
             return redirect('post_detail',pk=post.pk)
     else:
         form = PostForm(instance=post)
-    return render(request,'blog/post/post_edit.html',{'form':form})
+    return render(request,'blog/post/post_edit.html',{'form':form,'post':post})
 
 def post_draft_list(request):
     posts = Post.objects.filter(published_date__isnull=True).order_by('created_date')
     return render(request,'blog/post/post_draft_list.html',{'posts':posts})
 
-# def post_share(request, post_id):
-#     # Retrieve post by id
-#     post = get_object_or_404(Post, id=post_id, )
+def post_share(request, post_id):
+    # Retrieve post by id
+    return render(request,'blog/post/share.html',{})
