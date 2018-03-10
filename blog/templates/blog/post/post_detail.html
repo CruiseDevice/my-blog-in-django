@@ -1,4 +1,9 @@
 {% extends 'blog/base.html' %}
+{% block title %}
+  {% if post.title %}
+    {{post.title}}
+  {% endif %}
+{% endblock %}
 {% block content %}
   <div class="post">
     {% if post.published_date %}
@@ -6,10 +11,15 @@
         {{ post.published_date }}
       </div>
     {% endif %}
-    <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+    <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="far fa-edit"></span></a>
     <h1>{{ post.title }}</h1>
     <p>{{ post.text|linebreaksbr }}</p> 
   </div>
+  <br>
+  <div class = "share_post">
+    <a href="" class = "btn btn-primary">Share this post</a>
+  </div>
+  <br>  
   <div class = "display_comments">
     {% for comment in comments %}
       <br>
@@ -17,7 +27,8 @@
       {{comment}}
     {% endfor %}
   </div>
-
+  <br>
+  <br>
   <div class = "add_new_comment"> 
     {% if new_comment %}
       
