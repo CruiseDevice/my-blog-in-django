@@ -90,7 +90,7 @@ def post_draft_list(request):
 
 def post_share(request, pk):
     # Retrieve post by id
-    post = get_object_or_404(Post, pk=pk, status='published')
+    post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
         # Form was submitted
         form = EmailPostForm(request.POST)
