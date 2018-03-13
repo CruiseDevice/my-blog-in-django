@@ -1,0 +1,1 @@
+find . -name "*.pyc" -exec rm -rfv {} \; #to delete all .pyc files
