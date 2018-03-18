@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^post/(?P<pk>\d+)/edit/$', views.post_edit, name='post_edit'),
     url(r'^post/(?P<pk>\d+)/share/$',views.post_share,name='post_share'),
     url(r'^drafts/$',views.post_draft_list,name='post_draft_list'),
+    url(r'^post/(?P<pk>\d+)/share/$',views.post_share,name='post_share'),
 ]
