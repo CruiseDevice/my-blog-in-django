@@ -1,2 +1,2 @@
 # my-blog-in-django
-The blog i created while following Djangogirls tutorial. 
+The blog i created while learning django. 
