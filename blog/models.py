@@ -5,6 +5,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from taggit.managers import TaggableManager
 # Create your models here.
 
 class Post(models.Model):
@@ -19,6 +20,7 @@ class Post(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null = True)
     status = models.CharField(max_length=10,choices=STATUS_CHOICES,default='draft')
+    picture = models.ImageField(upload_to='post_images',blank=True)
 
     class Meta:
         ordering = ('-published_date',)
@@ -35,6 +37,8 @@ class Post(models.Model):
                                                    self.published_date.strftime('%m'),
                                                    self.published_date.strftime('%d'),
                                                    self.slug])
+
+    tags = TaggableManager()
 
 class Comment(models.Model):
     post    = models.ForeignKey(Post,related_name='comments')
