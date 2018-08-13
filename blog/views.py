@@ -4,23 +4,50 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView
-from .models import Post, Comment
 from django.utils import timezone
-from .forms import PostForm, CommentForm, EmailPostForm
 from django.db.models import Count
 from django.core.mail import send_mail
 
+from taggit.models import Tag
+
+from .models import Post, Comment
+from .forms import PostForm, CommentForm, EmailPostForm
+
 class PostListView(ListView):
-    queryset = Post.objects.filter(published_date__lte=timezone.now()).order_by('created_date')
+    queryset = Post.objects.filter(published_date__lte=timezone.now())\
+                .order_by('created_date')
+
     context_object_name = 'posts'
     paginate_by = 3
     template_name = "blog/post/post_list.html"
 
-def post_list(request):
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('created_date')
+def post_list(request, tag_slug=None):
+    posts = Post.objects.filter(published_date__lte=timezone.now())\
+                .order_by('created_date')
+    tag=None
+    if tag_slug:
+        tag=get_object_or_404(Tag, slug=tag_slug)
+        posts = posts.filter(tags__in=[tag])
+
+    print(posts)
+    paginator = Paginator(posts,2) # 3 posts in each page
+    print(str(paginator))
+    page = request.GET.get('page')
+    print(page)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer deliver the first page
+        posts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range deliver last page of results
+        posts = paginator.page(paginator.num_pages())
+
     return render(request,
             'blog/post/post_list.html',{
-                'posts':posts
+                'page':page,
+                'posts':posts,
+                'tag':tag
     })
 
 def post_detail(request,pk):
@@ -82,7 +109,8 @@ def post_edit(request,pk):
     })
 
 def post_draft_list(request):
-    posts = Post.objects.filter(published_date__isnull=True).order_by('created_date')
+    posts = Post.objects.filter(published_date__isnull=True)\
+                .order_by('created_date')
     return render(request,
             'blog/post/post_draft_list.html',{
                 'posts':posts
@@ -102,8 +130,10 @@ def post_share(request, pk):
             post_url = request.build_absolute_uri(
                 post.get_absolute_url()
             )
-            subject = '{} ({}) recommends you reading "{}"'.format(cd['name'],cd['email'],post.title)
-            message = 'Read "{}" at {}\n\n{}\'s comments:{}'.format(post.title,post_url,cd['name'],cd['comments'])
+            subject = '{} ({}) recommends you reading "{}"'.format(cd['name']\
+                        ,cd['email'],post.title)
+            message = 'Read "{}" at {}\n\n{}\'s comments:{}'.format(
+                        post.title,post_url,cd['name'],cd['comments'])
             send_mail(subject,message,'admin@myblog.com',[cd['to']])
             sent=True
     else:
