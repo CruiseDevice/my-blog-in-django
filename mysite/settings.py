@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'taggit',
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -127,3 +127,9 @@ MEDIA_URL = '/media/'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 1209600
+
+EMAIL_HOST = credentials.EMAIL_HOST
+EMAIL_HOST_USER = credentials.EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = credentials.EMAIL_HOST_PASSWORD
+EMAIL_PORT = credentials.EMAIL_PORT
+EMAIL_USE_TLS = True
