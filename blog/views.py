@@ -22,11 +22,8 @@ def post_list(request, tag_slug=None):
         tag = get_object_or_404(Tag, slug=tag_slug)
         posts = posts.filter(tags__in=[tag])
 
-    print(posts)
     paginator = Paginator(posts, 2)  # 3 posts in each page
-    print(str(paginator))
     page = request.GET.get('page')
-    print(page)
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:
