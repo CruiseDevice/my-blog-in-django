@@ -13,24 +13,17 @@ from taggit.models import Tag
 from .models import Post, Comment
 from .forms import PostForm, CommentForm, EmailPostForm
 
-class PostListView(ListView):
-    queryset = Post.objects.filter(published_date__lte=timezone.now())\
-                .order_by('created_date')
-
-    context_object_name = 'posts'
-    paginate_by = 3
-    template_name = "blog/post/post_list.html"
 
 def post_list(request, tag_slug=None):
     posts = Post.objects.filter(published_date__lte=timezone.now())\
                 .order_by('created_date')
-    tag=None
+    tag = None
     if tag_slug:
-        tag=get_object_or_404(Tag, slug=tag_slug)
+        tag = get_object_or_404(Tag, slug=tag_slug)
         posts = posts.filter(tags__in=[tag])
 
     print(posts)
-    paginator = Paginator(posts,2) # 3 posts in each page
+    paginator = Paginator(posts, 2)  # 3 posts in each page
     print(str(paginator))
     page = request.GET.get('page')
     print(page)
@@ -43,15 +36,15 @@ def post_list(request, tag_slug=None):
         # If page is out of range deliver last page of results
         posts = paginator.page(paginator.num_pages())
 
-    return render(request,
-            'blog/post/post_list.html',{
-                'page':page,
-                'posts':posts,
-                'tag':tag
+    return render(request, 'blog/post/post_list.html', {
+        'page': page,
+        'posts': posts,
+        'tag': tag
     })
 
-def post_detail(request,pk):
-    post = get_object_or_404(Post,pk=pk)
+
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)
     # new_comment = None
     # List of active comments for this post
     comments = post.comments.filter(active=True)
@@ -65,56 +58,53 @@ def post_detail(request,pk):
             new_comment.save()
     else:
         comment_form = CommentForm()
-    return render(request, 
-            'blog/post/post_detail.html',{
-                'post':post,
-                'comment_form':comment_form,
-                'comments':comments
+    return render(request, 'blog/post/post_detail.html', {
+        'post': post,
+        'comment_form': comment_form,
+        'comments': comments
     })
+
 
 def post_new(request):
     if request.method == "POST":
-        form=PostForm(request.POST)
+        form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
-            post.author=request.user
+            post.author = request.user
             post.published_date = timezone.now()
             post.save()
-            return redirect('post_detail',pk=post.pk)
+            return redirect('post_detail', pk=post.pk)
 
     else:
-        form=PostForm()
-    return render(request,
-            'blog/post/post_edit.html',{
-                'form':form
-    })
+        form = PostForm()
+    return render(request, 'blog/post/post_edit.html', {'form': form})
 
 
-def post_edit(request,pk):
-    post=get_object_or_404(Post,pk=pk)
-    if request.method=="POST":
+def post_edit(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == "POST":
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
             post.published_date = timezone.now()
             post.save()
-            return redirect('post_detail',pk=post.pk)
+            return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm(instance=post)
-    return render(request,
-            'blog/post/post_edit.html',{
-                'form':form,
-                'post':post
+    return render(request, 'blog/post/post_edit.html', {
+        'form': form,
+        'post': post
     })
+
 
 def post_draft_list(request):
     posts = Post.objects.filter(published_date__isnull=True)\
                 .order_by('created_date')
-    return render(request,
-            'blog/post/post_draft_list.html',{
-                'posts':posts
+    return render(request, 'blog/post/post_draft_list.html', {
+        'posts': posts
     })
+
 
 def post_share(request, pk):
     # Retrieve post by id
@@ -130,16 +120,18 @@ def post_share(request, pk):
             post_url = request.build_absolute_uri(
                 post.get_absolute_url()
             )
-            subject = '{} ({}) recommends you reading "{}"'.format(cd['name']\
-                        ,cd['email'],post.title)
-            message = 'Read "{}" at {}\n\n{}\'s comments:{}'.format(
-                        post.title,post_url,cd['name'],cd['comments'])
-            send_mail(subject,message,'admin@myblog.com',[cd['to']])
-            sent=True
+            subject = '{} ({}) recommends you reading "{}"'.format(
+                    cd['name'],
+                    cd['email'],
+                    post.title)
+            message = 'Read "{0}" at {1}\n\n{2}\'s comments:{3}'.format(
+                        post.title, post_url, cd['name'], cd['comments'])
+            send_mail(subject, message, 'admin@myblog.com', [cd['to']])
+            sent = True
     else:
         form = EmailPostForm()
-    return render(request, 'blog/post/share.html',{
-            'post':post,
-            'form':form,
-            'sent':sent
+    return render(request, 'blog/post/share.html', {
+        'post': post,
+        'form': form,
+        'sent': sent
     })
