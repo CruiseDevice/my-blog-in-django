@@ -32,6 +32,8 @@ ALLOWED_HOSTS = ['127.0.0.1','akashchavan.pythonanywhere.com']
 
 INSTALLED_APPS = [
     'blog.apps.BlogConfig',
+    'rest_framework',
+    'blog_api',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
