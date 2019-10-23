@@ -60,3 +60,16 @@ def post_detail(request, pk):
     elif request.method == "DELETE":
         post.delete()
         return HttpResponse(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['GET'])
+def post_draft(request):
+    try:
+        posts = Post.objects.filter(status="draft")\
+                .order_by('created_date')
+    except Posts.DoesNotExist:
+        return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
