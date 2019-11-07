@@ -15,9 +15,11 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         model = Group
         fields = '__all__'
 
+
 class PostSerializer(serializers.ModelSerializer):
     comments = serializers.StringRelatedField(many=True)
+
     class Meta:
         model = Post
         fields = ['author', 'slug', 'title', 'text', 'created_date',
-                 'published_date', 'status', 'comments']
+                  'published_date', 'status', 'comments']

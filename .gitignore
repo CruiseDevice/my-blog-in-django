@@ -6,3 +6,5 @@ venv
 *.pyc
 .vscode
 mysite/credentials.py
+blog.todo
+notes

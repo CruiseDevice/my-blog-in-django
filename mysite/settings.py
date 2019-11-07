@@ -25,7 +25,9 @@ SECRET_KEY = credentials.PROJECT_SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','akashchavan.pythonanywhere.com']
+# ALLOWED_HOSTS = ['127.0.0.1','akashchavan.pythonanywhere.com']
+ALLOWED_HOSTS = ['*']
+
 
 
 # Application definition
@@ -34,13 +36,14 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'rest_framework',
     'blog_api',
+    'corsheaders',
+    'taggit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'taggit',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -51,6 +54,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -135,3 +139,13 @@ EMAIL_HOST_USER = credentials.EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = credentials.EMAIL_HOST_PASSWORD
 EMAIL_PORT = credentials.EMAIL_PORT
 EMAIL_USE_TLS = True
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:8080',
+]
+CORS_ORIGIN_REGEX_WHITELIST = [
+    'http://localhost:8080',
+]
