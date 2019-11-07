@@ -20,7 +20,6 @@
 </template>
 
 <style scoped>
-
 .row{
   display: flex-shrink;
 }
