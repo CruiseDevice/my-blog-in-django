@@ -2,22 +2,55 @@
   <div>
     <center>
       <div class="row">
-        <div class="card mb-3">
-          <img class="card-img-top rounded-circle" src="./../../static/img/10258150.png" alt="cruisedevice">
-          <div class="card-body">
-            <h3 class="card-title">Akash's Blog</h3>
-            <p class="card-text"><small class="text-muted">Developer</small></p>
-            <div class="social-links">
-              <a href="https://www.linkedin.com/in/iakashchavan/">Linkedin</a>
-              <a href="https://github.com/CruiseDevice">Github</a>
-              <a href="https://twitter.com/CruiseDevice">Twitter</a>
+            <div class="card mb-3">
+              <img class="card-img-top rounded-circle" src="./../../static/img/10258150.png" alt="cruisedevice">
+              <div class="card-body">
+                <h3 class="card-title">Akash's Blog</h3>
+                <p class="card-text"><small class="text-muted">Developer</small></p>
+                <div class="social-links">
+                  <a href="https://www.linkedin.com/in/iakashchavan/">Linkedin</a>
+                  <a href="https://github.com/CruiseDevice">Github</a>
+                  <a href="https://twitter.com/CruiseDevice">Twitter</a>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>      
       </div>
     </center>
+    <div v-for="post in getposts" :key="post.id">
+      <div class="card mb-3 post-card">
+          <div class="card-body">
+            <a href=""><h5><p class="card-title">{{post.title}}</p></h5></a>
+            <p class="card-text">{{truncate(post.text, 300, '...')}}</p>
+          </div>
+        </div>
+    </div>
   </div>
 </template>
+
+<script>
+import {mapGetters} from 'vuex'
+
+export default {
+  name: 'Home',
+  created () {
+    this.$store.dispatch('fetchblogs')
+  },
+  computed: {
+    ...mapGetters([
+      'getposts'
+    ])
+  },
+  methods: {
+    truncate (text, length, clamp) {
+      clamp = clamp || '...'
+      var node = document.createElement('div')
+      node.innerHTML = text
+      var content = node.textContent
+      return content.length > length ? content.slice(0, length) + clamp : content
+    }
+  }
+}
+</script>
 
 <style scoped>
 .row{
@@ -28,12 +61,12 @@ img {
   width: 10rem;
   height: 1 0rem;
 }
+
 .card {
-  width: 40rem;
+  width: 60rem;
   margin: 0 auto;
   float: none;
   margin-bottom: 10px;
   margin-top: 1em;
 }
-
 </style>
