@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Home',
@@ -61,7 +61,6 @@ img {
   width: 10rem;
   height: 1 0rem;
 }
-
 .card {
   width: 60rem;
   margin: 0 auto;
