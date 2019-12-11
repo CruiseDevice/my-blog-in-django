@@ -24,7 +24,9 @@
               <small class="text-muted">{{post.published_date | date}}</small>
             </div>
             <p class="card-text">{{truncate(post.text, 300, '...')}}</p>
-            <footer class="badge"></footer>
+            <footer class="badge"  v-for="tag in post.tagList" :key="tag.id">
+              <span class="badge badge-secondary">{{tag}}</span>
+            </footer>
           </div>
         </div>
     </div>

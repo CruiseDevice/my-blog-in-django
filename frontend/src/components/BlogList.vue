@@ -6,6 +6,9 @@
                 <router-link :to="`/blog/${post.id}`"><h5 class="card-title">{{post.title}}</h5></router-link>
                 <small class="text-muted">{{post.published_date | date}}</small>
                 <p class="card-text">{{truncate(post.text, 300, '...')}}</p>
+                <footer class="badge"  v-for="tag in post.tagList" :key="tag.id">
+                  <span class="badge badge-secondary">{{tag}}</span>
+                </footer>
               </div>
             </div>
         </div>

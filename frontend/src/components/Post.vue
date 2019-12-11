@@ -4,7 +4,10 @@
       <div class="card-body">
         <div class="card-title">
           <h4>{{postById.title}}</h4>
-          <small class="text-muted">{{postById.published_date | date}}</small>
+          <footer class="badge"  v-for="tag in postById.tagList" :key="tag.id">
+            <span class="badge badge-secondary">{{tag}}</span>
+          </footer>
+          <small class="text-muted float-right">{{postById.published_date | date}}</small>
         </div>
         <div v-html="postById.text"></div>
       </div>

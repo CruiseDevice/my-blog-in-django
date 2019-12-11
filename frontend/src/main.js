@@ -9,7 +9,6 @@ import BootstrapVue from 'bootstrap-vue'
 import store from './store/modules'
 import * as filters from './filter'
 
-
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 

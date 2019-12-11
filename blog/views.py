@@ -42,7 +42,6 @@ def post_list(request, tag_slug=None):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    # new_comment = None
     # List of active comments for this post
     comments = post.comments.filter(active=True)
     if request.method == 'POST':
