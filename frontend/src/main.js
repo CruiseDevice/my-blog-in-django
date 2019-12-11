@@ -7,9 +7,14 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import BootstrapVue from 'bootstrap-vue'
 import store from './store/modules'
+import * as filters from './filter'
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
+
+for (const key in filters) {
+  Vue.filter(key, filters[key])
+}
 
 /* eslint-disable no-new */
 new Vue({

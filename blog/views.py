@@ -8,9 +8,9 @@ from django.utils import timezone
 from django.db.models import Count
 from django.core.mail import send_mail
 
-from taggit.models import Tag
+# from taggit.models import Tag
 
-from .models import Post, Comment
+from .models import Post, Comment, Tag
 from .forms import PostForm, CommentForm, EmailPostForm
 
 
@@ -42,7 +42,6 @@ def post_list(request, tag_slug=None):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    # new_comment = None
     # List of active comments for this post
     comments = post.comments.filter(active=True)
     if request.method == 'POST':

@@ -1,12 +1,9 @@
-# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from taggit.managers import TaggableManager
-# Create your models here.
 
 
 class Post(models.Model):
@@ -26,6 +23,7 @@ class Post(models.Model):
             max_length=10,
             choices=STATUS_CHOICES,
             default='draft')
+    tags = models.ManyToManyField('Tag',  related_name='posts')
 
     class Meta:
         ordering = ('-published_date',)
@@ -44,8 +42,6 @@ class Post(models.Model):
             self.published_date.strftime('%d'),
             self.slug])
 
-    tags = TaggableManager()
-
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, related_name='comments')
@@ -61,3 +57,16 @@ class Comment(models.Model):
 
     def __str__(self):
         return 'Comment by {0} on {1}'.format(self.name, self.post)
+
+
+class Tag(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    tag = models.CharField(max_length=255)
+    slug = models.SlugField(db_index=True, unique=True)
+
+    class Meta:
+        ordering = ['-created_at', '-updated_at']
+
+    def __str__(self):
+        return self.tag

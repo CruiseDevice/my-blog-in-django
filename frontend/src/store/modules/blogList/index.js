@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 const state = {
-  posts: []
+  posts: JSON.parse(localStorage.getItem('posts')) || []
 }
 
 const mutations = {
@@ -12,23 +12,26 @@ const mutations = {
 }
 
 const actions = {
-  fetchblogs (state) {
+  fetchblogs(state) {
     axios({
-        method: 'get',
-        url: 'http://127.0.0.1:8000/api/',
-        headers: {
-            'Content-Type': 'application/json'
-        }
+      method: 'get',
+      url: 'http://127.0.0.1:8000/api/',
+      headers: {
+          'Content-Type': 'application/json'
+      }
     })
-    .then((response) => {
-        console.log(response.data)
+      .then((response) => {
         state.commit('UPDATE_BLOG_POSTS', response.data)
-    })
-  }
+        localStorage.setItem('posts', JSON.stringify(response.data))
+      })
+  },
 }
 
 const getters = {
-  getposts: state => state.posts
+  getposts: state => state.posts,
+  postById: state => (id) => {
+    return state.posts.find(post => post.id === id)
+  }
 }
 
 const blogListModule = {

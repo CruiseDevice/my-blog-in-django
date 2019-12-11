@@ -19,8 +19,14 @@
     <div v-for="post in getposts" :key="post.id">
       <div class="card mb-3 post-card">
           <div class="card-body">
-            <a href=""><h5><p class="card-title">{{post.title}}</p></h5></a>
+            <div class="card-title">
+              <router-link :to="`/blog/${post.id}`"><h5 class="card-title">{{post.title}}</h5></router-link>
+              <small class="text-muted">{{post.published_date | date}}</small>
+            </div>
             <p class="card-text">{{truncate(post.text, 300, '...')}}</p>
+            <footer class="badge"  v-for="tag in post.tagList" :key="tag.id">
+              <span class="badge badge-secondary">{{tag}}</span>
+            </footer>
           </div>
         </div>
     </div>
@@ -28,7 +34,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Home',
@@ -61,7 +67,6 @@ img {
   width: 10rem;
   height: 1 0rem;
 }
-
 .card {
   width: 60rem;
   margin: 0 auto;
