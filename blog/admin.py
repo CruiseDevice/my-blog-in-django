@@ -2,8 +2,12 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .models import Post, Comment
+from .models import Post, Comment, Tag
 # Register your models here.
+
+
+class TagInline(admin.TabularInline):
+    model = Post.tags.through
 
 
 class PostAdmin(admin.ModelAdmin):
@@ -15,6 +19,10 @@ class PostAdmin(admin.ModelAdmin):
     date_hierarchy = 'published_date'
     ordering = ['status', 'published_date']
 
+    inlines = [
+        TagInline,
+    ]
+
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'post', 'created', 'active')
@@ -24,3 +32,4 @@ class CommentAdmin(admin.ModelAdmin):
 
 admin.site.register(Post, PostAdmin)
 admin.site.register(Comment, CommentAdmin)
+admin.site.register(Tag)

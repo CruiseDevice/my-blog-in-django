@@ -4,6 +4,7 @@
           <div class="card mb-3 post-card">
               <div class="card-body">
                 <router-link :to="`/blog/${post.id}`"><h5 class="card-title">{{post.title}}</h5></router-link>
+                <small class="text-muted">{{post.published_date | date}}</small>
                 <p class="card-text">{{truncate(post.text, 300, '...')}}</p>
               </div>
             </div>

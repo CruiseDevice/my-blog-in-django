@@ -21,7 +21,6 @@ const actions = {
             }
         })
             .then((response) => {
-                console.log(response.data)
                 state.commit('UPDATE_BLOG_POSTS', response.data)
                 localStorage.setItem('posts', JSON.stringify(response.data))
             })
