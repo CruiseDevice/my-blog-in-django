@@ -16,9 +16,8 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-div{
-  overflow-x: hidden
-}
+<style>
+    #app {
+        overflow-x: hidden;
+    }
 </style>

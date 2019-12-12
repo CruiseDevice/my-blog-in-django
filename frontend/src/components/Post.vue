@@ -12,11 +12,20 @@
         <div v-html="postById.text"></div>
       </div>
     </div>
+    <div class="commments">
+    </div>
+    <div class="comment-form">
+      <CommentComponent/>
+    </div>
   </div>
 </template>
 <script>
+import CommentComponent from './CommentComponent'
 export default {
   name: 'Post',
+  components: {
+    CommentComponent
+  },
   props: ['post_id'],
   computed: {
     postById () {
