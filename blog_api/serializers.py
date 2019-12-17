@@ -19,6 +19,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
+    author = serializers.CharField(source='author.username', read_only=True)
     comments = serializers.StringRelatedField(many=True)
     tagList = TagRelatedField(many=True, required=False, source='tags')
 
