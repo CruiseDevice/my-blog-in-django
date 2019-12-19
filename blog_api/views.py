@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 
@@ -12,7 +11,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 
-from blog.models import Post
+from blog.models import Post, Tag
 from .serializers import PostSerializer
 
 
@@ -21,7 +20,6 @@ def post_list(request, tag_slug=None):
     if request.method == 'GET':
         posts = Post.objects.filter(published_date__lte=timezone.now())\
                 .order_by('created_date')
-
         if tag_slug:
             tag = get_object_or_404(Tag, slug=tag_slug)
             posts = posts.filter(tags__in=[tag])
@@ -66,7 +64,7 @@ def post_draft(request):
     try:
         posts = Post.objects.filter(status="draft")\
                 .order_by('created_date')
-    except Posts.DoesNotExist:
+    except Post.DoesNotExist:
         return HttpResponse(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
