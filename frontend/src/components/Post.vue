@@ -12,11 +12,33 @@
         <div v-html="postById.text"></div>
       </div>
     </div>
+    <div class="commments">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title">
+            <h4>Comments:</h4>
+              <div v-for="comments in postById.commentsList">
+                {{comments.body}}
+                <footer class="badge">
+                  <span class="badge badge-secondary">by {{comments.name}}</span>
+                </footer>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-form">
+      <CommentComponent/>
+    </div>
   </div>
 </template>
 <script>
+import CommentComponent from './CommentComponent'
 export default {
   name: 'Post',
+  components: {
+    CommentComponent
+  },
   props: ['post_id'],
   computed: {
     postById () {
