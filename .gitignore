@@ -7,4 +7,3 @@ venv
 .vscode
 mysite/credentials.py
 blog.todo
-notes
