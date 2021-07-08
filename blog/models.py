@@ -3,8 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
-
+from django.urls import reverse
 
 class Post(models.Model):
 
@@ -13,7 +12,7 @@ class Post(models.Model):
         ('published', 'Published'),
     )
 
-    author = models.ForeignKey('auth.User')
+    author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     slug = models.SlugField(max_length=250, unique_for_date='published_date')
     title = models.CharField(max_length=200)
     text = models.TextField()
@@ -44,7 +43,9 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post, related_name='comments')
+    post = models.ForeignKey(Post,
+                             related_name='comments',
+                             on_delete=models.CASCADE)
     name = models.CharField(max_length=180)
     email = models.EmailField()
     body = models.TextField()
