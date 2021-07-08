@@ -1,3 +1,4 @@
-Django==1.11.23
-Pillow==6.2.0
+Django
+Pillow
+django-cors-headers
 djangorestframework
