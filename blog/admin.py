@@ -10,6 +10,9 @@ class TagInline(admin.TabularInline):
     model = Post.tags.through
 
 
+class CommentInline(admin.TabularInline):
+    model = Comment
+
 class PostAdmin(admin.ModelAdmin):
 
     list_display = ('title', 'slug', 'author', 'published_date', 'status')
@@ -21,6 +24,7 @@ class PostAdmin(admin.ModelAdmin):
 
     inlines = [
         TagInline,
+        CommentInline
     ]
 
 
