@@ -4,12 +4,8 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
 
 urlpatterns = [
-    # path('posts/', views.post_list),
     path('posts/', views.PostListView.as_view()),
-    # url(r'^posts/tag/(?P<tag_slug>[-\w]+)/$', views.post_list),
-    # path('post/<int:pk>/', views.post_detail),
     path('post/<int:pk>/', views.PostDetailView.as_view()),
-    # path('drafts/', views.post_draft),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
